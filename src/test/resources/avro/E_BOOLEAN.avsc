@@ -1,0 +1,8 @@
+{"namespace": "com.marko.test.event",
+ "type": "record",
+ "name": "E_BOOLEAN",     
+  "fields": [
+ 
+      {"name": "f_value",   "type": "boolean"}
+      ]
+}

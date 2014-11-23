@@ -1,0 +1,13 @@
+{"namespace": "com.marko.test.event",
+ "type": "record",
+ "name": "E_COMPOSITE",     
+  "fields": [
+      {"name": "f_string",   "type": "string"},
+      {"name": "f_int",   "type": "int"},
+	  {"name": "f_long",   "type": "long"},
+	  {"name": "f_float",   "type": "float"},
+	  {"name": "f_double",   "type": "double"},
+	  {"name": "f_boolean",   "type": "boolean"},
+	  {"name": "f_bytes",   "type": "bytes"}
+  ]
+}

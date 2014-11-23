@@ -1,0 +1,7 @@
+{"namespace": "com.marko.test.event",
+ "type": "record",
+ "name": "E_ARRAY",     
+  "fields": [
+      {"name": "f_value",   "type": {"type": "array", "items": "long"}}
+      ]
+}

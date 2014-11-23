@@ -1,0 +1,7 @@
+{"namespace": "com.marko.test.event",
+ "type": "record",
+ "name": "E_NULL",     
+  "fields": [
+      {"name": "f_value",   "type": ["null", "string"]}
+  ]
+}

@@ -1,0 +1,8 @@
+{"namespace": "com.marko.test.event",
+ "type": "record",
+ "name": "E_DOUBLE",     
+  "fields": [
+ 
+      {"name": "f_value",   "type": "double"}
+      ]
+}
