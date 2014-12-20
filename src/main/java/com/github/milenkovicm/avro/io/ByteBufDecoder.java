@@ -88,7 +88,7 @@ public class ByteBufDecoder extends Decoder {
     @Override
     public Utf8 readString(final Utf8 old) throws IOException {
         final int length = this.readInt();
-        final Utf8 result = (old != null ? old : new Utf8());
+        final Utf8 result = old != null ? old : new Utf8();
         result.setByteLength(length);
         if (0 != length) {
             this.buffer.readBytes(result.getBytes());
@@ -183,12 +183,12 @@ public class ByteBufDecoder extends Decoder {
         return this.readInt();
     }
 
-    protected void doSkipBytes(final int length) throws IOException {
+    private void doSkipBytes(final int length) throws IOException {
         final int readerIndex = this.buffer.readerIndex();
         this.buffer.readerIndex(readerIndex + length);
     }
 
-    protected long doReadItemCount() throws IOException {
+    private long doReadItemCount() throws IOException {
         long result = this.readLong();
         if (result < 0) {
             this.readLong(); // Consume byte-count if present
@@ -197,7 +197,7 @@ public class ByteBufDecoder extends Decoder {
         return result;
     }
 
-    protected long doSkipItems() throws IOException {
+    private long doSkipItems() throws IOException {
         long result = this.readInt();
         while (result < 0) {
             final long bytecount = this.readLong();

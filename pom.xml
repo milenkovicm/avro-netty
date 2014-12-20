@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.milenkovicm</groupId>
-	<artifactId>avro</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
-	<description>Avro Endcoders/Decoders imolemented using Netty buffers</description>
+	<artifactId>avro-netty</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<description>Avro Endcoders/Decoders implemented using Netty buffers</description>
 	<name>Avro ByteBuf en/decoders</name>
 
 
@@ -16,7 +16,7 @@
 		</repository>
 	</distributionManagement>
 
-	<scm> 
+	<scm>
 		<connection>scm:git:https://bitbucket.org:milenkovicm/avro-netty.git</connection>
 		<developerConnection>scm:git:git@bitbucket.org:milenkovicm/avro-netty.git</developerConnection>
 		<url>https://bitbucket.org:milenkovicm/avro-netty</url>
@@ -34,7 +34,6 @@
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
-
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -61,6 +60,35 @@
 							<goal>schema</goal>
 
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.10</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.github.milenkovicm</groupId>
+						<artifactId>checkstyle-rules</artifactId>
+						<version>1.0.0</version>
+					</dependency>
+				</dependencies>
+
+				<executions>
+					<execution>
+						<id>check-style</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<consoleOutput>true</consoleOutput>
+							<logViolationsToConsole>true</logViolationsToConsole>
+							<failsOnError>true</failsOnError>
+							<failOnViolation>true</failOnViolation>
+							<configLocation>default/checkstyle.xml</configLocation>
+							<includeTestSourceDirectory>false</includeTestSourceDirectory>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -122,4 +150,28 @@
 			</build>
 		</profile>
 	</profiles>
+	<repositories>
+		<repository>
+			<id>bintray-milenkovicm</id>
+			<url>http://dl.bintray.com/milenkovicm/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>bintray-milenkovicm</id>
+			<url>http://dl.bintray.com/milenkovicm/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 </project>

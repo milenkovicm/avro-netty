@@ -91,7 +91,6 @@ public class ByteBufEncoder extends BinaryEncoder {
         }
     }
 
-    /** Writes a fixed from a ByteBuffer. */
     @Override
     public void writeFixed(final ByteBuffer bytes) throws IOException {
         this.buffer.writeBytes(bytes);
@@ -191,7 +190,7 @@ public class ByteBufEncoder extends BinaryEncoder {
     static void encodeWriteFloat(final float f, final ByteBuf buffer) {
         final int bits = Float.floatToRawIntBits(f);
         // hotspot compiler works well with this variant
-        buffer.writeByte((byte) ((bits) & 0xFF));
+        buffer.writeByte((byte) (bits & 0xFF));
         buffer.writeByte((byte) ((bits >>> 8) & 0xFF));
         buffer.writeByte((byte) ((bits >>> 16) & 0xFF));
         buffer.writeByte((byte) ((bits >>> 24) & 0xFF));
@@ -213,8 +212,8 @@ public class ByteBufEncoder extends BinaryEncoder {
         // the compiler seems to execute this order the best, likely due to
         // register allocation -- the lifetime of constants is minimized.
 
-        buffer.setByte(writerIndex, (byte) ((first) & 0xFF));
-        buffer.setByte(writerIndex + 4, (byte) ((second) & 0xFF));
+        buffer.setByte(writerIndex, (byte) (first & 0xFF));
+        buffer.setByte(writerIndex + 4, (byte) (second & 0xFF));
         buffer.setByte(writerIndex + 5, (byte) ((second >>> 8) & 0xFF));
         buffer.setByte(writerIndex + 1, (byte) ((first >>> 8) & 0xFF));
         buffer.setByte(writerIndex + 2, (byte) ((first >>> 16) & 0xFF));
