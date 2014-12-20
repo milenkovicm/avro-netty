@@ -1,6 +1,7 @@
 package com.github.milenkovicm.avro;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -50,22 +51,23 @@ public class Helper {
     }
 
     public static byte[] avroGenericByteBufEncoder(final GenericRecord record) {
+        final ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(1024);
         final ByteBufEncoder encoder = new ByteBufEncoder();
+        encoder.setBuffer(buffer);
         final DatumWriter<GenericRecord> writer = new GenericDatumWriter<GenericRecord>(record.getSchema());
-
         try {
             writer.write(record, encoder);
-            return encoder.getBytes();
-
+            return getBytes(encoder.getBuffer());
         } catch (final Exception e) {
             throw new RuntimeException(e);
         } finally {
-            encoder.release();
+            buffer.release();
         }
     }
 
     public static GenericRecord avroGenericByteBufDecoder(final ByteBuf buffer, final GenericRecord record) {
-        final ByteBufDecoder decoder = new ByteBufDecoder(buffer);
+        final ByteBufDecoder decoder = new ByteBufDecoder();
+        decoder.setBuffer(buffer);
         final GenericDatumReader<GenericRecord> reader = new GenericDatumReader<GenericRecord>(record.getSchema());
         try {
             return reader.read(null, decoder);
@@ -151,5 +153,15 @@ public class Helper {
         final GenericRecord record = new GenericData.Record(E_ENUM.SCHEMA$);
         record.put("f_value", value);
         return record;
+    }
+
+    public static byte[] getBytes(final ByteBuf buffer) {
+        if (buffer.isDirect()) {
+            final byte[] blob = new byte[buffer.readableBytes()];
+            buffer.getBytes(0, blob);
+            return blob;
+        } else {
+            return buffer.array();
+        }
     }
 }

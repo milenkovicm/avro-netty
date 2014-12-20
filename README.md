@@ -8,7 +8,9 @@ To use `Encoder` just create new instance:
 
 ```
 // GenericRecord record - record to encode 
+final ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(1024);
 final ByteBufEncoder encoder = new ByteBufEncoder();
+encoder.setBuffer(buffer);
 final DatumWriter<GenericRecord> writer = new GenericDatumWriter<GenericRecord>(record.getSchema());
 
 try {
@@ -24,7 +26,8 @@ Similar for `Decoder`:
 
 ```
 // ByteBuf buffer - buffer to decode
-final ByteBufDecoder decoder = new ByteBufDecoder(buffer);
+final ByteBufDecoder decoder = new ByteBufDecoder();
+decoder.setBuffer(buffer);
 final GenericDatumReader<GenericRecord> reader = new GenericDatumReader<GenericRecord>(record.getSchema());
 try {
     final GenericRecord record = reader.read(null, decoder);
@@ -41,6 +44,8 @@ To get best performance from decoder don't forget to use pooled buffers and turn
 ```
 java -Dio.netty.leakDetectionLevel=DISABLED -Dio.netty.allocator.type=pooled  ...
 ```
+
+Encoder/Decoder is not thread safe, developer should ensure thread safety if needed.
 
 ##To follow
 

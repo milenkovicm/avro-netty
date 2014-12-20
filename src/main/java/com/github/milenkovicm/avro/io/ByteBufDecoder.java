@@ -10,15 +10,13 @@ import org.apache.avro.io.Decoder;
 import org.apache.avro.util.Utf8;
 
 /**
+ * {@code ByteBufDecoder} is an implementation of {@code Decoder} backed by {@code ByteBuf}.
+ *
  * @see {@code BinaryDecoder}
  */
 public class ByteBufDecoder extends Decoder {
 
-    private final ByteBuf buffer;
-
-    public ByteBufDecoder(final ByteBuf buffer) {
-        this.buffer = buffer;
-    }
+    private ByteBuf buffer;
 
     @Override
     public void readNull() throws IOException {
@@ -32,7 +30,6 @@ public class ByteBufDecoder extends Decoder {
 
     @Override
     public int readInt() throws IOException {
-        // not good read from binary decoder?
         int n = 0;
         int b;
         int shift = 0;
@@ -54,7 +51,6 @@ public class ByteBufDecoder extends Decoder {
 
     @Override
     public long readLong() throws IOException {
-        // not good read from binary decoder
         long n = 0;
         int b;
         int shift = 0;
@@ -72,103 +68,6 @@ public class ByteBufDecoder extends Decoder {
         } while (shift < 64);
         throw new IOException("Invalid long encoding");
     }
-
-    //
-    //    @Override
-    //    public int readInt() throws IOException {
-    //
-    //        final int len = 1;
-    //        int b = this.buffer.readByte() & 0xff;
-    //        int n = b & 0x7f;
-    //        if (b > 0x7f) {
-    //            b = this.buffer.readByte() & 0xff;
-    //            n ^= (b & 0x7f) << 7;
-    //            if (b > 0x7f) {
-    //                b = this.buffer.readByte() & 0xff;
-    //                n ^= (b & 0x7f) << 14;
-    //                if (b > 0x7f) {
-    //                    b = this.buffer.readByte() & 0xff;
-    //                    n ^= (b & 0x7f) << 21;
-    //                    if (b > 0x7f) {
-    //                        b = this.buffer.readByte() & 0xff;
-    //                        n ^= (b & 0x7f) << 28;
-    //                        if (b > 0x7f) {
-    //                            throw new IOException("Invalid int encoding");
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        return (n >>> 1) ^ -(n & 1); // back to two's-complement
-    //    }
-    //
-    //    @Override
-    //    public long readLong() throws IOException {
-    //
-    //        int b = this.buffer.readByte() & 0xff;
-    //        int n = b & 0x7f;
-    //        long l;
-    //        if (b > 0x7f) {
-    //            b = this.buffer.readByte() & 0xff;
-    //            n ^= (b & 0x7f) << 7;
-    //            if (b > 0x7f) {
-    //                b = this.buffer.readByte() & 0xff;
-    //                n ^= (b & 0x7f) << 14;
-    //                if (b > 0x7f) {
-    //                    b = this.buffer.readByte() & 0xff;
-    //                    n ^= (b & 0x7f) << 21;
-    //                    if (b > 0x7f) {
-    //                        // only the low 28 bits can be set, so this won't carry
-    //                        // the sign bit to the long
-    //                        l = this.innerLongDecode(n);
-    //                    } else {
-    //                        l = n;
-    //                    }
-    //                } else {
-    //                    l = n;
-    //                }
-    //            } else {
-    //                l = n;
-    //            }
-    //        } else {
-    //            l = n;
-    //        }
-    //
-    //        return (l >>> 1) ^ -(l & 1); // back to two's-complement
-    //    }
-    //
-    //    // splitting readLong up makes it faster because of the JVM does more
-    //    // optimizations on small methods
-    //    private long innerLongDecode(long l) throws IOException {
-    //
-    //        int b = this.buffer.readByte() & 0xff;
-    //        l ^= (b & 0x7fL) << 28;
-    //        if (b > 0x7f) {
-    //            b = this.buffer.readByte() & 0xff;
-    //            l ^= (b & 0x7fL) << 35;
-    //            if (b > 0x7f) {
-    //                b = this.buffer.readByte() & 0xff;
-    //                l ^= (b & 0x7fL) << 42;
-    //                if (b > 0x7f) {
-    //                    b = this.buffer.readByte() & 0xff;
-    //                    l ^= (b & 0x7fL) << 49;
-    //                    if (b > 0x7f) {
-    //                        b = this.buffer.readByte() & 0xff;
-    //                        l ^= (b & 0x7fL) << 56;
-    //                        if (b > 0x7f) {
-    //                            b = this.buffer.readByte() & 0xff;
-    //                            l ^= (b & 0x7fL) << 63;
-    //                            if (b > 0x7f) {
-    //                                throw new IOException("Invalid long encoding");
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //
-    //        return l;
-    //    }
 
     @Override
     public float readFloat() throws IOException {
@@ -209,7 +108,6 @@ public class ByteBufDecoder extends Decoder {
 
     @Override
     public ByteBuffer readBytes(final ByteBuffer old) throws IOException {
-
         final int length = this.readInt();
         ByteBuffer result;
 
@@ -224,7 +122,6 @@ public class ByteBufDecoder extends Decoder {
         if (length > 0) {
             this.buffer.readBytes(result);
         }
-
         result.limit(length);
         result.flip();
 
@@ -311,21 +208,14 @@ public class ByteBufDecoder extends Decoder {
         return result;
     }
 
-    public void release() {
-        this.buffer.release();
-    }
 
-    public ByteBuf unwrap() {
+    public ByteBuf getBuffer() {
         return this.buffer;
     }
 
-    public byte[] getBytes() {
-        if (this.buffer.isDirect()) {
-            final byte[] blob = new byte[this.buffer.readableBytes()];
-            this.buffer.getBytes(0, blob);
-            return blob;
-        } else {
-            return this.buffer.array();
-        }
+    public void setBuffer(final ByteBuf buffer) {
+        this.buffer = buffer;
     }
+
+
 }

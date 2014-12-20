@@ -27,7 +27,8 @@ public class MainLoop {
         System.err.print("starting ... ");
         final long time = System.currentTimeMillis() + 120_000;
         while (System.currentTimeMillis() < time) {
-            final ByteBufDecoder decoder = new ByteBufDecoder(buffer);
+            final ByteBufDecoder decoder = new ByteBufDecoder();
+            decoder.setBuffer(buffer);
             final GenericRecord result = reader.read(null, decoder);
             hash += (int) result.get(1);
             buffer.resetReaderIndex();
