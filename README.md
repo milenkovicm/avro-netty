@@ -15,7 +15,7 @@ final DatumWriter<GenericRecord> writer = new GenericDatumWriter<GenericRecord>(
 
 try {
     writer.write(record, encoder);
-    final ByteBuf buffer = encoder.unwrap();
+    final ByteBuf buffer = encoder.getBuffer();
 	// do something with buffer, but don't forget to release it 
 } catch (final Exception e) {
     throw new RuntimeException(e);
