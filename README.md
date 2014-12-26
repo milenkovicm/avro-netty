@@ -1,4 +1,4 @@
-#Avro Netty ByteBuf Encoder/Decoder
+#Avro Netty ByteBuf Encoder/Decoder [![Build Status](https://api.travis-ci.org/milenkovicm/avro-netty.svg)](https://travis-ci.org/milenkovicm/avro-netty)
 
 Simple [Apache Avro](avro.apache.org) `Encoder/Decoder` implemented using [netty.io](netty.io) byte buffers ( `io.netty.buffer.ByteBuf` ). The main motivation for this implementation is to utilize Netty's powerful `ButeBuf` pooling.
 
