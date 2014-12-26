@@ -6,7 +6,7 @@ Simple [Apache Avro](avro.apache.org) `Encoder/Decoder` implemented using [netty
 
 To use `Encoder` just create new instance:
 
-```
+```java
 // GenericRecord record - record to encode 
 final ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(1024);
 final ByteBufEncoder encoder = new ByteBufEncoder();
@@ -15,8 +15,8 @@ final DatumWriter<GenericRecord> writer = new GenericDatumWriter<GenericRecord>(
 
 try {
     writer.write(record, encoder);
-    final ByteBuf buffer = encoder.getBuffer();
-	// do something with buffer, but don't forget to release it 
+    final ByteBuf result = encoder.getBuffer();
+	// do something with result, but don't forget to release it 
 } catch (final Exception e) {
     throw new RuntimeException(e);
 } 
@@ -24,7 +24,7 @@ try {
 
 Similar for `Decoder`:
 
-```
+```java
 // ByteBuf buffer - buffer to decode
 final ByteBufDecoder decoder = new ByteBufDecoder();
 decoder.setBuffer(buffer);
@@ -41,8 +41,8 @@ try {
  
 To get best performance from decoder don't forget to use pooled buffers and turn leak detection off!
 
-```
-java -Dio.netty.leakDetectionLevel=DISABLED -Dio.netty.allocator.type=pooled  ...
+```bash
+$java -Dio.netty.leakDetectionLevel=DISABLED -Dio.netty.allocator.type=pooled  ...
 ```
 
 Encoder/Decoder is not thread safe, developer should ensure thread safety if needed.
