@@ -1,4 +1,4 @@
-{"namespace": "com.marko.test.event",
+{"namespace": "com.github.milenkovicm.avro.test.event",
  "type": "record",
  "name": "E_BOOLEAN",     
   "fields": [

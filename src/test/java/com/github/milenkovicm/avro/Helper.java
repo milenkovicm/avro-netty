@@ -19,19 +19,19 @@ import org.apache.avro.io.EncoderFactory;
 
 import com.github.milenkovicm.avro.io.ByteBufDecoder;
 import com.github.milenkovicm.avro.io.ByteBufEncoder;
-import com.marko.test.event.E_ARRAY;
-import com.marko.test.event.E_BOOLEAN;
-import com.marko.test.event.E_BYTES;
-import com.marko.test.event.E_COMPOSITE;
-import com.marko.test.event.E_DOUBLE;
-import com.marko.test.event.E_ENUM;
-import com.marko.test.event.E_FLOAT;
-import com.marko.test.event.E_INT;
-import com.marko.test.event.E_LONG;
-import com.marko.test.event.E_MAP;
-import com.marko.test.event.E_NULL;
-import com.marko.test.event.E_STRING;
-import com.marko.test.event.E_SUIT;
+import com.github.milenkovicm.avro.test.event.E_ARRAY;
+import com.github.milenkovicm.avro.test.event.E_BOOLEAN;
+import com.github.milenkovicm.avro.test.event.E_BYTES;
+import com.github.milenkovicm.avro.test.event.E_COMPOSITE;
+import com.github.milenkovicm.avro.test.event.E_DOUBLE;
+import com.github.milenkovicm.avro.test.event.E_ENUM;
+import com.github.milenkovicm.avro.test.event.E_FLOAT;
+import com.github.milenkovicm.avro.test.event.E_INT;
+import com.github.milenkovicm.avro.test.event.E_LONG;
+import com.github.milenkovicm.avro.test.event.E_MAP;
+import com.github.milenkovicm.avro.test.event.E_NULL;
+import com.github.milenkovicm.avro.test.event.E_STRING;
+import com.github.milenkovicm.avro.test.event.E_SUIT;
 
 public class Helper {
 

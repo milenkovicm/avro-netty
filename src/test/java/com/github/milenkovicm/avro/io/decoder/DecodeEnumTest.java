@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.milenkovicm.avro.Helper;
-import com.marko.test.event.E_SUIT;
+import com.github.milenkovicm.avro.test.event.E_SUIT;
 
 public class DecodeEnumTest extends AbstractDecoderTest {
     @Test
