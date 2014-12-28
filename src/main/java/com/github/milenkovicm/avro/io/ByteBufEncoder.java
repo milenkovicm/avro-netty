@@ -91,8 +91,38 @@ public class ByteBufEncoder extends BinaryEncoder {
         }
     }
 
+    /**
+     * Writes a {@link ByteBuf}.
+     *
+     * @param bytes
+     *        {@link ByteBuf} to write
+     * @throws IOException
+     *         If this is a statefull writer and a byte-string is not expected
+     */
+    public void writeBytes(final ByteBuf bytes) throws IOException {
+        final int len = bytes.readableBytes() - bytes.readerIndex();
+        if (0 == len) {
+            this.writeZero();
+        } else {
+            this.writeInt(len);
+            this.writeFixed(bytes);
+        }
+    }
+
     @Override
     public void writeFixed(final ByteBuffer bytes) throws IOException {
+        this.buffer.writeBytes(bytes);
+    }
+
+    /**
+     * Writes a fixed from a ByteBuffer.
+     *
+     * @param bytes
+     *        bytes to write
+     * @throws IOException
+     *         If this is a statefull writer and a byte-string is not expected
+     */
+    public void writeFixed(final ByteBuf bytes) throws IOException {
         this.buffer.writeBytes(bytes);
     }
 
