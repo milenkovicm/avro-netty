@@ -21,12 +21,12 @@ public abstract class AbstractDecoderTest extends AbstractTest {
     }
 
     public void test(final GenericRecord originalValue, final ByteBuf buffer) {
-        Assert.assertEquals(originalValue.get("f_value"), Helper.avroGenericByteBufDecoder(buffer, originalValue).get("f_value"));
+        Assert.assertEquals(originalValue.get("f_value"), Helper.avroGenericByteBufDecoder(buffer, originalValue.getSchema()).get("f_value"));
     }
 
     public void test(final GenericRecord originalValue) {
         final ByteBuf buffer = this.encode(originalValue);
-        Assert.assertEquals(originalValue.get("f_value"), Helper.avroGenericByteBufDecoder(buffer, originalValue).get("f_value"));
+        Assert.assertEquals(originalValue.get("f_value"), Helper.avroGenericByteBufDecoder(buffer, originalValue.getSchema()).get("f_value"));
     }
 
 

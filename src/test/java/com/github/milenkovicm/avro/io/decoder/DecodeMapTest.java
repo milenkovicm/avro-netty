@@ -23,7 +23,8 @@ public class DecodeMapTest extends AbstractDecoderTest {
         final GenericRecord originalValue = Helper.genericMap(value);
         final ByteBuf buffer = this.encode(originalValue);
 
-        final Map<CharSequence, Long> result = (Map<CharSequence, Long>) Helper.avroGenericByteBufDecoder(buffer, originalValue).get("f_value");
+        final Map<CharSequence, Long> result = (Map<CharSequence, Long>) Helper.avroGenericByteBufDecoder(buffer, originalValue.getSchema()).get(
+                "f_value");
 
         for (final CharSequence key : result.keySet()) {
             Assert.assertEquals(value.get(key.toString()), result.get(key));

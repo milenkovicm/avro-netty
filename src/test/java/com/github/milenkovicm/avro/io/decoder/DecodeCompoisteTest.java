@@ -13,7 +13,7 @@ public class DecodeCompoisteTest extends AbstractDecoderTest {
     public void test_record() {
         final GenericRecord originalValue = Helper.defaultGeneric();
         final ByteBuf buffer = this.encode(originalValue);
-        final GenericRecord decodedValue = Helper.avroGenericByteBufDecoder(buffer, originalValue);
+        final GenericRecord decodedValue = Helper.avroGenericByteBufDecoder(buffer, originalValue.getSchema());
 
         Assert.assertEquals(originalValue.get("f_string"), decodedValue.get("f_string").toString());
         Assert.assertEquals(originalValue.get("f_int"), decodedValue.get("f_int"));

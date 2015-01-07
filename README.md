@@ -66,7 +66,7 @@ writer.write(record, encoder);
 ```  
 Note that if you use `ByteBuf` as a generic record property you'll have to release it manually, `NettyGenericDatumWriter` wont release it for you.
 
-schema for the used event: 
+schema used: 
 ```
 {"namespace": "com.github.milenkovicm.avro.test.event",
  "type": "record",
@@ -76,4 +76,15 @@ schema for the used event:
       {"name": "f_value",   "type": "bytes"}
       ]
 }
+```
+
+## NettyGenericDatumReader
+
+Default `DatumReader` implementation `GenericDatumReader` uses `java.nio.ByteBuffer` for byte array properties, which may not be optimal for all use cases especially if powerful netty pooled buffer allocator is used. `NettyGenericDatumReader` has ability to read byte arrays as `io.netty.buffer.ByteBuf`. Be careful as `ByteBuf` properties should be released when not needed.
+
+```java
+final ByteBufDecoder decoder = new ByteBufDecoder();
+decoder.setBuffer(buffer);
+final GenericDatumReader<GenericRecord> reader = new NettyGenericDatumReader<GenericRecord>(schema);
+GenericRecord record =  reader.read(null, decoder);
 ```

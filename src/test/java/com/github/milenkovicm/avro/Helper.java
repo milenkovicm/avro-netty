@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -17,6 +18,8 @@ import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.EncoderFactory;
 
+import com.github.milenkovicm.avro.generic.NettyGenericDatumReader;
+import com.github.milenkovicm.avro.generic.NettyGenericDatumWriter;
 import com.github.milenkovicm.avro.io.ByteBufDecoder;
 import com.github.milenkovicm.avro.io.ByteBufEncoder;
 import com.github.milenkovicm.avro.test.event.E_ARRAY;
@@ -65,10 +68,34 @@ public class Helper {
         }
     }
 
-    public static GenericRecord avroGenericByteBufDecoder(final ByteBuf buffer, final GenericRecord record) {
+    public static GenericRecord avroGenericByteBufDecoder(final ByteBuf buffer, final Schema schema) {
         final ByteBufDecoder decoder = new ByteBufDecoder();
         decoder.setBuffer(buffer);
-        final GenericDatumReader<GenericRecord> reader = new GenericDatumReader<GenericRecord>(record.getSchema());
+        final GenericDatumReader<GenericRecord> reader = new GenericDatumReader<GenericRecord>(schema);
+        try {
+            return reader.read(null, decoder);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static ByteBuf avroGenericNettyEncoder(final GenericRecord record) {
+        final ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(64);
+        final ByteBufEncoder encoder = new ByteBufEncoder();
+        encoder.setBuffer(buffer);
+        final DatumWriter<GenericRecord> writer = new NettyGenericDatumWriter<GenericRecord>(record.getSchema());
+        try {
+            writer.write(record, encoder);
+            return encoder.getBuffer();
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static GenericRecord avroGenericNettyDecoder(final ByteBuf buffer, final Schema schema) {
+        final ByteBufDecoder decoder = new ByteBufDecoder();
+        decoder.setBuffer(buffer);
+        final GenericDatumReader<GenericRecord> reader = new NettyGenericDatumReader<GenericRecord>(schema);
         try {
             return reader.read(null, decoder);
         } catch (final IOException e) {

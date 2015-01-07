@@ -14,7 +14,8 @@ public class DecodeEnumTest extends AbstractDecoderTest {
     public void test_value() {
         final GenericRecord originalValue = Helper.genericEnum(E_SUIT.DIAMONDS);
         final ByteBuf buffer = this.encode(originalValue);
-        Assert.assertEquals(originalValue.get("f_value").toString(), Helper.avroGenericByteBufDecoder(buffer, originalValue).get("f_value")
+        Assert.assertEquals(originalValue.get("f_value").toString(),
+                Helper.avroGenericByteBufDecoder(buffer, originalValue.getSchema()).get("f_value")
                 .toString());
     }
 }

@@ -1,18 +1,15 @@
 package com.github.milenkovicm.avro.generic;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
 import java.nio.ByteBuffer;
 
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.io.DatumWriter;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.milenkovicm.avro.Helper;
-import com.github.milenkovicm.avro.io.ByteBufEncoder;
 import com.github.milenkovicm.avro.test.event.E_BYTES;
 
 public class NettyGenericDatumWriterTest {
@@ -26,7 +23,7 @@ public class NettyGenericDatumWriterTest {
         final GenericRecord bytebuf = new GenericData.Record(E_BYTES.SCHEMA$);
         bytebuf.put("f_value", ByteBufAllocator.DEFAULT.buffer(this.value.length).writeBytes(this.value));
 
-        Assert.assertArrayEquals(Helper.avroGenericBinaryEncoder(bytebuffer), avroGenericNettyEncoder(bytebuf));
+        Assert.assertArrayEquals(Helper.avroGenericBinaryEncoder(bytebuffer), Helper.getBytes(Helper.avroGenericNettyEncoder(bytebuf)));
     }
 
     @Test
@@ -35,7 +32,7 @@ public class NettyGenericDatumWriterTest {
         final GenericRecord bytebuffer = new GenericData.Record(E_BYTES.SCHEMA$);
         bytebuffer.put("f_value", ByteBuffer.wrap(this.value));
 
-        Assert.assertArrayEquals(Helper.avroGenericBinaryEncoder(bytebuffer), avroGenericNettyEncoder(bytebuffer));
+        Assert.assertArrayEquals(Helper.avroGenericBinaryEncoder(bytebuffer), Helper.getBytes(Helper.avroGenericNettyEncoder(bytebuffer)));
     }
 
     @Test
@@ -46,22 +43,9 @@ public class NettyGenericDatumWriterTest {
         final GenericRecord recordByteBuf = Helper.defaultGeneric();
         recordByteBuf.put("f_bytes", ByteBufAllocator.DEFAULT.buffer(this.value.length).writeBytes(this.value));
 
-        Assert.assertArrayEquals("should be equal", Helper.avroGenericBinaryEncoder(record), avroGenericNettyEncoder(recordByteBuf));
+        Assert.assertArrayEquals("should be equal", Helper.avroGenericBinaryEncoder(record),
+                Helper.getBytes(Helper.avroGenericNettyEncoder(recordByteBuf)));
     }
 
-    static byte[] avroGenericNettyEncoder(final GenericRecord record) {
-        final ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(64);
-        final ByteBufEncoder encoder = new ByteBufEncoder();
-        encoder.setBuffer(buffer);
-        final DatumWriter<GenericRecord> writer = new NettyGenericDatumWriter<GenericRecord>(record.getSchema());
-        try {
-            writer.write(record, encoder);
-            return Helper.getBytes(encoder.getBuffer());
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            buffer.release();
-        }
-    }
 
 }

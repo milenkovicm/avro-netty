@@ -1,6 +1,7 @@
 package com.github.milenkovicm.avro.io;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -124,6 +125,32 @@ public class ByteBufDecoder extends Decoder {
         }
         result.limit(length);
         result.flip();
+
+        return result;
+    }
+
+    /**
+     * @see {link {@link #readBytes(ByteBuffer)}
+     * @param old
+     *        {@link ByteBuf} to be reused
+     * @return {@link ByteBuf}
+     * @throws IOException
+     *         in case of error
+     */
+    public ByteBuf readBytes(final ByteBuf old) throws IOException {
+        final int length = this.readInt();
+        ByteBuf result;
+
+        if (old != null && length <= old.capacity()) {
+            result = old;
+            result.clear();
+        } else {
+            result = ByteBufAllocator.DEFAULT.buffer(length);
+        }
+
+        if (length > 0) {
+            this.buffer.readBytes(result);
+        }
 
         return result;
     }

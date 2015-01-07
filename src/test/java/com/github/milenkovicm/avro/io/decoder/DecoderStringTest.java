@@ -28,8 +28,11 @@ public class DecoderStringTest extends AbstractDecoderTest {
 
     @Test
     public void test_plus_value() {
+
         final GenericRecord originalValue = Helper.genericString(this.value);
         final ByteBuf buffer = this.encode(originalValue);
-        Assert.assertEquals(originalValue.get("f_value"), Helper.avroGenericByteBufDecoder(buffer, originalValue).get("f_value").toString());
+
+        Assert.assertEquals(originalValue.get("f_value"), Helper.avroGenericByteBufDecoder(buffer, originalValue.getSchema()).get("f_value")
+                .toString());
     }
 }
