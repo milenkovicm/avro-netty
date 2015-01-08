@@ -225,10 +225,9 @@ public class ByteBufDecoder extends Decoder {
     }
 
     private long doSkipItems() throws IOException {
-        long result = this.readInt();
+        int result = this.readInt();
         while (result < 0) {
             final long bytecount = this.readLong();
-            //TODO: looks problematic?
             this.doSkipBytes((int) bytecount);
             result = this.readInt();
         }

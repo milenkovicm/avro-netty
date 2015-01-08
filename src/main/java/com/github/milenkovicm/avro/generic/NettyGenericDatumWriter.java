@@ -29,20 +29,6 @@ public class NettyGenericDatumWriter<D> extends GenericDatumWriter<D> {
         this.setSchema(root);
     }
 
-    /**
-     * Called to write data.
-     *
-     * @param datum
-     *        object to write
-     * @param out
-     *        encoder to use
-     * @throws IOException
-     *         in case of error
-     */
-    public void write(final D datum, final ByteBufEncoder out) throws IOException {
-        this.write(datum, out);
-    }
-
     @Override
     protected void writeBytes(final Object datum, final Encoder out) throws IOException {
         if (datum instanceof ByteBuffer) {
