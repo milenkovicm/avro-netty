@@ -139,11 +139,14 @@ public class ByteBufDecoder extends Decoder {
      */
     public ByteBuf readBytes(final ByteBuf old) throws IOException {
         final int length = this.readInt();
-        ByteBuf result;
 
-        if (old != null && length <= old.capacity()) {
+        ByteBuf result;
+        if (old != null) {
             result = old;
             result.clear();
+            if (result.capacity() != length) {
+                result.capacity(length);
+            }
         } else {
             result = ByteBufAllocator.DEFAULT.buffer(length);
         }

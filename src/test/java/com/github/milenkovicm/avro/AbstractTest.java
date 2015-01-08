@@ -18,7 +18,7 @@ import org.junit.BeforeClass;
 public class AbstractTest {
 
     public static final ByteBufAllocator DEFAULT_ALLOCATOR = UnpooledByteBufAllocator.DEFAULT;
-    protected static final Queue<ByteBuf> freeLaterQueue = new ArrayDeque<>();
+    private static final Queue<ByteBuf> freeLaterQueue = new ArrayDeque<>();
 
     /**
      * Runs before test class.

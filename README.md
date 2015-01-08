@@ -1,8 +1,8 @@
-#Avro Netty ByteBuf Encoder/Decoder [![Build Status](https://api.travis-ci.org/milenkovicm/avro-netty.svg)](https://travis-ci.org/milenkovicm/avro-netty)
+# Avro Netty ByteBuf Encoder/Decoder [![Build Status](https://api.travis-ci.org/milenkovicm/avro-netty.svg)](https://travis-ci.org/milenkovicm/avro-netty)
 
 Simple [Apache Avro](avro.apache.org) `Encoder/Decoder` implemented using [netty.io](netty.io) byte buffers ( `io.netty.buffer.ByteBuf` ). The main motivation for this implementation is to utilize Netty's powerful `ButeBuf` pooling.
 
-##How to use?
+## How to use?
 
 To use `Encoder` just create new instance:
 
@@ -88,3 +88,12 @@ decoder.setBuffer(buffer);
 final GenericDatumReader<GenericRecord> reader = new NettyGenericDatumReader<GenericRecord>(schema);
 GenericRecord record =  reader.read(null, decoder);
 ```
+
+## Don't forget!
+
+Don't forget two things:
+
+ 1. to release `ByteBuf` when not needed anymore.
+ 2. implementations are not thread safe.
+ 
+that's it!

@@ -53,8 +53,8 @@ public class ByteBufResolvingDecoder extends ResolvingDecoder {
     public ByteBuf readBytes(final ByteBuf old) throws IOException {
         final Symbol actual = this.parser.advance(Symbol.BYTES);
         if (actual == Symbol.STRING) {
-            final Utf8 s = this.in.readString(null);
-            return ByteBufAllocator.DEFAULT.buffer(s.getByteLength()).writeBytes(s.getBytes());
+            final Utf8 string = this.in.readString(null);
+            return ByteBufAllocator.DEFAULT.buffer(string.getByteLength()).writeBytes(string.getBytes());
         } else {
             assert actual == Symbol.BYTES;
             return ((ByteBufDecoder) this.in).readBytes(old);
