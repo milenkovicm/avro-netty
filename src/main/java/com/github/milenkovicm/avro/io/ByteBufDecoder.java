@@ -213,7 +213,7 @@ public class ByteBufDecoder extends Decoder {
         return this.readInt();
     }
 
-    private void doSkipBytes(final int length) throws IOException {
+    private void doSkipBytes(final int length)  {
         final int readerIndex = this.buffer.readerIndex();
         this.buffer.readerIndex(readerIndex + length);
     }

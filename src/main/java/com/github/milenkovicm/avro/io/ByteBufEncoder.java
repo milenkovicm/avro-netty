@@ -119,10 +119,8 @@ public class ByteBufEncoder extends BinaryEncoder {
      *
      * @param bytes
      *        bytes to write
-     * @throws IOException
-     *         If this is a statefull writer and a byte-string is not expected
      */
-    public void writeFixed(final ByteBuf bytes) throws IOException {
+    public void writeFixed(final ByteBuf bytes)  {
         this.buffer.writeBytes(bytes);
     }
 

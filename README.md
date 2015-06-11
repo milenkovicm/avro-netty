@@ -63,10 +63,12 @@ encoder.setBuffer(buffer);
 
 final DatumWriter<GenericRecord> writer = new NettyGenericDatumWriter<GenericRecord>(record.getSchema());
 writer.write(record, encoder);
-```  
+```
+
 Note that if you use `ByteBuf` as a generic record property you'll have to release it manually, `NettyGenericDatumWriter` wont release it for you.
 
-schema used: 
+schema used:
+
 ```
 {"namespace": "com.github.milenkovicm.avro.test.event",
  "type": "record",
