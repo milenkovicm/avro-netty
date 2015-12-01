@@ -111,7 +111,7 @@
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-buffer</artifactId>
-			<version>4.0.24.Final</version>
+			<version>4.0.33.Final</version>
 		</dependency>
 	</dependencies>
 
